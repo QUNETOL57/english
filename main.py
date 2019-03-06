@@ -26,23 +26,37 @@ class DataBase():
         sql = """UPDATE {} SET {} = {} WHERE {} = {}""".format('words', 'ru_word', "'есть'", 'ru_word', "'еда'")
         self.changes_db(sql)
 
-    def select_db(self):
-        sql = """SELECT * FROM {}""".format('words')
+    def select_db(self, sql = """SELECT * FROM {}""".format('words')):
         self.changes_db(sql)
-        print(self.cursor.fetchall())
+        return self.cursor.fetchall()
 
 class Word(DataBase):
     def input_word(self):
+        #input word to the database
         words =[]
         words += input().split()
         print(words)
         self.insert_db(words[0],words[1],words[2],words[3])
 
+    def choice_theme(self):
+        #choice theme from the database
+        theme = input()
+        sql = """SELECT "en_word","ru_word" FROM {} WHERE theme='{}'""".format('words',theme)
+        return sql
 
-dbase = DataBase()
+    def print_words(self):
+        db = self.select_db(self.choice_theme())
+        for lines in db:
+            for column in lines:
+                print(column,end=" ")
+            print()
+
+# dbase = DataBase()
 word = Word()
-word.input_word()
+# word.input_word()
+# word.choice_theme()
 # dbase.insert_db()
 # dbase.delete_db()
 # dbase.update_db()
-dbase.select_db()
+# dbase.select_db()
+word.print_words()
