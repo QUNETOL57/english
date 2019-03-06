@@ -1,5 +1,5 @@
 import sqlite3
-from os import system
+import random
 
 class DataBase():
     connect_db = None
@@ -31,6 +31,9 @@ class DataBase():
         return self.cursor.fetchall()
 
 class Word(DataBase):
+    russian_word_index = 1
+    english_word_index = 0
+
     def input_word(self):
         #input word to the database
         words =[]
@@ -41,22 +44,61 @@ class Word(DataBase):
     def choice_theme(self):
         #choice theme from the database
         theme = input()
-        sql = """SELECT "en_word","ru_word" FROM {} WHERE theme='{}'""".format('words',theme)
+        if theme == 'all' or theme == '*':
+            sql = """SELECT "en_word","ru_word" FROM {}""".format('words')
+        else:
+            sql = """SELECT "en_word","ru_word" FROM {} WHERE theme='{}'""".format('words',theme)
         return sql
 
-    def print_words(self):
+    def print_word(self,index1,index2):
+        # MAIN method to print words for a theme
         db = self.select_db(self.choice_theme())
-        for lines in db:
-            for column in lines:
-                print(column,end=" ")
-            print()
+        for line in db:
+            print(f"{line[index1]} - {line[index2]}")
 
-# dbase = DataBase()
+    def print_en_ru(self):
+        # print english - russian words for a theme
+        self.print_word(self.english_word_index,self.russian_word_index)
+
+    def print_ru_en(self):
+        # print russian - english words for a theme
+        self.print_word(self.russian_word_index,self.english_word_index)
+
+    def test_random_word(self,index1,index2):
+        # print random word for a theme
+        db = self.select_db(self.choice_theme())
+        line = db[random.randint(0,len(db)-1)]
+        print(f"{line[index1]} - {line[index2]}")
+
+    def test_random_en(self):
+        self.test_random_word(self.english_word_index,self.russian_word_index)
+
+    def test_random_ru(self):
+        self.test_random_word(self.russian_word_index,self.english_word_index)
+
+    def test_input(self, index1, index2):
+        db = self.select_db(self.choice_theme())
+        random.shuffle(db)
+        for line in db:
+            answer = input(f"{line[index1]} : ")
+            if answer.strip() == line[index2]:
+                print("+")
+            else:
+                print("-")
+
+    def test_input_ru(self):
+        self.test_input(self.english_word_index,self.russian_word_index)
+
+    def test_input_en(self):
+        self.test_input(self.russian_word_index,self.english_word_index)
+
+    # def test_one_three(self):
+    #     # print 1 en word and 3 ru words
+    #     db = self.select_db(self.choice_theme())
+    #     random.shuffle(db)
+    #     for line in db:
+    #         print(f"{line[0]}\n\t{line[1]}\n\t")
+
+
 word = Word()
-# word.input_word()
-# word.choice_theme()
-# dbase.insert_db()
-# dbase.delete_db()
-# dbase.update_db()
-# dbase.select_db()
-word.print_words()
+word.test_random_ru()
