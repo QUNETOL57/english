@@ -92,12 +92,12 @@ class Word(DataBase):
     def test_input_en(self):
         self.test_input(self.russian_word_index,self.english_word_index)
 
-    # def test_one_three(self):
-    #     # print 1 en word and 3 ru words
-    #     db = self.select_db(self.choice_theme())
-    #     random.shuffle(db)
-    #     for line in db:
-    #         print(f"{line[0]}\n\t{line[1]}\n\t")
+    def test_one_three(self):
+        # print 1 en word and 3 ru words
+        db = self.select_db(self.choice_theme())
+        random.shuffle(db)
+        for line in db:
+            print(f"{line[0]}\n\t{line[1]}\n\t")
 
 
 word = Word()
