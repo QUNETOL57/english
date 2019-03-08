@@ -92,13 +92,34 @@ class Word(DataBase):
     def test_input_en(self):
         self.test_input(self.russian_word_index,self.english_word_index)
 
-    def test_one_three(self):
-        # print 1 en word and 3 ru words
+    def test_one_three(self, index1,index2):
+        # print 1 word and 3 another words
         db = self.select_db(self.choice_theme())
         random.shuffle(db)
+        def make_word(db,index1,index2,word1):
+            words_from_db = []
+            for i in db:
+                words_from_db.append(i[index1])
+            while True:
+                word2 = random.choice(words_from_db)
+                word3 = random.choice(words_from_db)
+                if word1 != word2 and word1 != word3 and word2 != word3:
+                    words = [word1,word2,word3]
+                    random.shuffle(words)
+                    return f"{words[0]} {words[1]} {words[2]}"
         for line in db:
-            print(f"{line[0]}\n\t{line[1]}\n\t")
+            print(f"{line[index2]}\n{make_word(db,index1,index2,line[index1])}")
+            answer = input()
+            if answer.strip() == line[index1]:
+                print("+")
+            else:
+                print("-")
 
+    def test_one_three_ru(self):
+        self.test_one_three(self.russian_word_index,self.english_word_index)
+
+    def test_one_three_ru(self):
+        self.test_one_three(self.english_word_index, self.russian_word_index)
 
 word = Word()
-word.test_random_ru()
+word.test_one_three_ru()
