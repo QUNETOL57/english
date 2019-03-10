@@ -38,9 +38,16 @@ class ChoiceThemeMixin:
             sql = f'SELECT "en_{table}","ru_{table}" FROM {table}'
         else:
             sql = f'SELECT "en_{table}","ru_{table}" FROM {table} WHERE theme="{theme}"'
-        return sql 
+        return sql
 
-class Word(DataBase,ChoiceThemeMixin):
+class PrintSmthMixin:
+    def print_smth(self,theme,index1,index2):
+        db = self.select_db(theme)
+        for line in db:
+            print(f"{line[index1]} - {line[index2]}")
+
+
+class Word(DataBase,ChoiceThemeMixin,PrintSmthMixin):
     russian_word_index = 1
     english_word_index = 0
 
@@ -51,19 +58,13 @@ class Word(DataBase,ChoiceThemeMixin):
         print(words)
         self.insert_db(words[0],words[1],words[2],words[3])
 
-    def print_word(self,index1,index2):
-        # MAIN method to print words for a theme
-        db = self.select_db(self.choice_theme('words'))
-        for line in db:
-            print(f"{line[index1]} - {line[index2]}")
-
     def print_en_ru(self):
         # print english - russian words for a theme
-        self.print_word(self.english_word_index,self.russian_word_index)
+        self.print_smth(self.choice_theme('words'),self.english_word_index,self.russian_word_index)
 
     def print_ru_en(self):
         # print russian - english words for a theme
-        self.print_word(self.russian_word_index,self.english_word_index)
+        self.print_smth(self.choice_theme('words'),self.russian_word_index,self.english_word_index)
 
     def test_random_word(self,index1,index2):
         # print random word for a theme
@@ -130,7 +131,7 @@ class Text(DataBase,ChoiceThemeMixin):
 
 
 
-# word = Word()
-# word.print_en_ru()
-text=Text()
-text.print_text()
+word = Word()
+word.print_en_ru()
+# text=Text()
+# text.print_text()
