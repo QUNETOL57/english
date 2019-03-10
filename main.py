@@ -41,13 +41,13 @@ class Word(DataBase):
         print(words)
         self.insert_db(words[0],words[1],words[2],words[3])
 
-    def choice_theme(self):
+    def choice_theme(self,table='words'):
         #choice theme from the database
         theme = input()
         if theme == 'all' or theme == '*':
-            sql = """SELECT "en_word","ru_word" FROM {}""".format('words')
+            sql = """SELECT "en_word","ru_word" FROM {}""".format(table)
         else:
-            sql = """SELECT "en_word","ru_word" FROM {} WHERE theme='{}'""".format('words',theme)
+            sql = """SELECT "en_word","ru_word" FROM {} WHERE theme='{}'""".format(table,theme)
         return sql
 
     def print_word(self,index1,index2):
@@ -121,5 +121,14 @@ class Word(DataBase):
     def test_one_three_ru(self):
         self.test_one_three(self.english_word_index, self.russian_word_index)
 
-word = Word()
-word.test_one_three_ru()
+class Text(Word):
+    def print_text(self):
+        db = self.select_db(self.choice_theme('text'))
+        for line in db:
+            print(f"{line[0]} - {line[1]}")
+
+
+# word = Word()
+# word.test_one_three_ru()
+text=Text()
+text.print_text()
