@@ -38,7 +38,7 @@ class ChoiceThemeMixin:
             sql = f'SELECT "en_{table}","ru_{table}" FROM {table}'
         else:
             sql = f'SELECT "en_{table}","ru_{table}" FROM {table} WHERE theme="{theme}"'
-        return sql
+        return sql 
 
 class Word(DataBase,ChoiceThemeMixin):
     russian_word_index = 1
