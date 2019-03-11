@@ -43,6 +43,11 @@ class ChoiceThemeMixin:
             sql = f'SELECT "en_{table}","ru_{table}" FROM {table} WHERE theme="{theme}"'
         return sql
 
+class ChoiceSelectionMixin:
+    def choice_selection(self,table,theme):
+        selection = input()
+        print(f'SELECT "en_{table}","ru_{table}" FROM {table} WHERE theme="{theme} AND ')
+
 class PrintSmthMixin:
     def print_smth(self,theme,index1,index2):
         db = self.select_db(theme)
@@ -50,7 +55,6 @@ class PrintSmthMixin:
             print(f"{line[index1]} - {line[index2]}")
 
 class Word(DataBase,ChoiceThemeMixin,PrintSmthMixin):
-
     def input_word(self):
         #input word to the database
         words =[]
@@ -130,7 +134,7 @@ class Text(DataBase,ChoiceThemeMixin,PrintSmthMixin):
     def text_ru_en(self):
         self.print_smth(self.choice_theme('texts'),self.russian_smth_index,self.english_smth_index)
 
-# word = Word()
-# word.words_en_ru()
-text=Text()
-text.text_en_ru()
+word = Word()
+word.words_en_ru()
+# text=Text()
+# text.text_en_ru()
