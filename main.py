@@ -33,7 +33,7 @@ class DataBase():
         self.changes_db(sql)
         return self.cursor.fetchall()
 
-class ChoiceThemeMixin:
+class ChoiceTSMixin:
     #choice theme from the database
     def choice_theme(self,table):
         theme = input('Theme: ')
@@ -42,11 +42,11 @@ class ChoiceThemeMixin:
         else:
             sql = f'SELECT "en_{table}","ru_{table}" FROM {table} WHERE theme="{theme}"'
         return sql
-
+    #choice selectin from the database
     def choice_selection(self,sql):
         selection = input('Selection: ')
         if selection == 'all' or selection == '*':
-            return
+            return sql
         else:
             return sql + f' AND selection="{selection}"'
 
@@ -56,7 +56,7 @@ class PrintSmthMixin:
         for line in db:
             print(f"{line[index1]} - {line[index2]}")
 
-class Word(DataBase,ChoiceThemeMixin,PrintSmthMixin):
+class Word(DataBase,ChoiceTSMixin,PrintSmthMixin):
     def input_word(self):
         #input word to the database
         words =[]
@@ -66,15 +66,17 @@ class Word(DataBase,ChoiceThemeMixin,PrintSmthMixin):
 
     def words_en_ru(self):
         # print english - russian words for a theme
-        self.print_smth(self.choice_theme('words'),self.english_smth_index,self.russian_smth_index)
+        self.print_smth(self.choice_selection(self.choice_theme('words')),
+        self.english_smth_index,self.russian_smth_index)
 
     def words_ru_en(self):
         # print russian - english words for a theme
-        self.print_smth(self.choice_theme('words'),self.russian_smth_index,self.english_smth_index)
+        self.print_smth(self.choice_selection(self.choice_theme('words')),
+        self.russian_smth_index,self.english_smth_index)
 
     def test_random_word(self,index1,index2):
         # print random word for a theme
-        db = self.select_db(self.choice_theme('words'))
+        db = self.select_db(self.choice_selection(self.choice_theme('words')))
         line = db[random.randint(0,len(db)-1)]
         print(f"{line[index1]} - {line[index2]}")
 
@@ -85,7 +87,7 @@ class Word(DataBase,ChoiceThemeMixin,PrintSmthMixin):
         self.test_random_word(self.russian_smth_index,self.english_smth_index)
 
     def test_input(self, index1, index2):
-        db = self.select_db(self.choice_theme('words'))
+        db = self.select_db(self.choice_selection(self.choice_theme('words')))
         random.shuffle(db)
         for line in db:
             answer = input(f"{line[index1]} : ")
@@ -102,7 +104,7 @@ class Word(DataBase,ChoiceThemeMixin,PrintSmthMixin):
 
     def test_one_three(self, index1,index2):
         # print 1 word and 3 another words
-        db = self.select_db(self.choice_theme('words'))
+        db = self.select_db(self.choice_selection(self.choice_theme('words')))
         random.shuffle(db)
         def make_word(db,index1,index2,word1):
             words_from_db = []
@@ -130,17 +132,17 @@ class Word(DataBase,ChoiceThemeMixin,PrintSmthMixin):
         self.test_one_three(self.english_smth_index, self.russian_smth_index)
 
 
-class Text(DataBase,ChoiceThemeMixin,PrintSmthMixin):
+class Text(DataBase,ChoiceTSMixin,PrintSmthMixin):
     def text_en_ru(self):
         self.print_smth(self.choice_theme('texts'),self.english_smth_index,self.russian_smth_index)
 
     def text_ru_en(self):
         self.print_smth(self.choice_theme('texts'),self.russian_smth_index,self.english_smth_index)
 
-# word = Word()
-# word.words_en_ru()
+word = Word()
+word.words_en_ru()
 
-f=ChoiceThemeMixin()
-print(f.choice_selection(f.choice_theme('words')))
+# f=ChoiceThemeMixin()
+# print(f.choice_selection(f.choice_theme('words')))
 # text=Text()
 # text.text_en_ru()
