@@ -17,8 +17,10 @@ class DataBase():
         self.cursor.execute(sql)
         self.connect_db.commit()
 
-    def insert_db(self,n,en,ru,th):
-        sql = """INSERT INTO {} VALUES ('{}','{}','{}','{}')""".format('words',n,en,ru,th)
+    def insert_db(self,en,ru,th,sel):
+        self.cursor.execute(f'SELECT * FROM "words"')
+        id = len(self.cursor.fetchall()) + 1
+        sql = """INSERT INTO {} VALUES ('{}','{}','{}','{}','{}')""".format('words',id,en,ru,th,sel)
         self.changes_db(sql)
 
     def delete_db(self):
@@ -59,10 +61,19 @@ class PrintSmthMixin:
 class Word(DataBase,ChoiceTSMixin,PrintSmthMixin):
     def input_word(self):
         #input word to the database
-        words =[]
-        words += input().split()
-        print(words)
-        self.insert_db(words[0],words[1],words[2],words[3])
+        # words =[]
+        # words += input().split()
+        # self.insert_db(words[0],words[1],words[2],words[3])
+        theme = input('Theme: ')
+        selection = input('Selection: ')
+        while True:
+            word_en = input()
+            if word_en == 'e' or word_en == 'q':
+                break
+            word_ru = input()
+            self.insert_db(word_en,word_ru,theme,selection)
+
+
 
     def words_en_ru(self):
         # print english - russian words for a theme
@@ -142,9 +153,6 @@ class Text(DataBase,ChoiceTSMixin,PrintSmthMixin):
         self.russian_smth_index,self.english_smth_index)
 
 word = Word()
-word.words_en_ru()
-
-# f=ChoiceThemeMixin()
-# print(f.choice_selection(f.choice_theme('words')))
-# text=Text()
-# text.text_en_ru()
+# word.input_word()
+# word.words_en_ru()
+word.test_input_ru()
