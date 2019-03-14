@@ -51,6 +51,7 @@ class ChoiceTSMixin:
             return sql
         else:
             return sql + f' AND selection="{selection}"'
+    
 
 class PrintSmthMixin:
     def print_smth(self,theme,index1,index2):
@@ -72,7 +73,6 @@ class Word(DataBase,ChoiceTSMixin,PrintSmthMixin):
                 break
             word_ru = input()
             self.insert_db(word_en,word_ru,theme,selection)
-
 
 
     def words_en_ru(self):
@@ -127,7 +127,7 @@ class Word(DataBase,ChoiceTSMixin,PrintSmthMixin):
                 if word1 != word2 and word1 != word3 and word2 != word3:
                     words = [word1,word2,word3]
                     random.shuffle(words)
-                    return f"{words[0]} {words[1]} {words[2]}"
+                    return f"{words[0]} | {words[1]} | {words[2]}"
         for line in db:
             print(f"{line[index2]}\n{make_word(db,index1,index2,line[index1])}")
             answer = input()
@@ -142,7 +142,6 @@ class Word(DataBase,ChoiceTSMixin,PrintSmthMixin):
     def test_one_three_ru(self):
         self.test_one_three(self.english_smth_index, self.russian_smth_index)
 
-
 class Text(DataBase,ChoiceTSMixin,PrintSmthMixin):
     def text_en_ru(self):
         self.print_smth(self.choice_selection(self.choice_theme('texts')),
@@ -155,4 +154,5 @@ class Text(DataBase,ChoiceTSMixin,PrintSmthMixin):
 word = Word()
 # word.input_word()
 # word.words_en_ru()
-word.test_input_ru()
+word.words_en_ru()
+word.test_one_three_ru()
