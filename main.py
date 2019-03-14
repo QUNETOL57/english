@@ -17,10 +17,10 @@ class DataBase():
         self.cursor.execute(sql)
         self.connect_db.commit()
 
-    def insert_db(self,en,ru,th,sel):
+    def insert_db(self,en,ru,theme,selection):
         self.cursor.execute(f'SELECT * FROM "words"')
         id = len(self.cursor.fetchall()) + 1
-        sql = """INSERT INTO {} VALUES ('{}','{}','{}','{}','{}')""".format('words',id,en,ru,th,sel)
+        sql = f"INSERT INTO words VALUES ('{id}','{en}','{ru}','{theme}','{selection}')"
         self.changes_db(sql)
 
     def delete_db(self):
@@ -80,7 +80,6 @@ class Words(DataBase,ChoiceTSMixin,PrintSmthMixin):
                 break
             word_ru = input()
             self.insert_db(word_en,word_ru,theme,selection)
-
 
     def words_en_ru(self):
         # print english - russian words for a theme
