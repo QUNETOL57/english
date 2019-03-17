@@ -37,23 +37,29 @@ class DataBase():
 
 class ChoiceTSMixin:
     #choice theme from the database
-    def choice_theme(self,table):
-        theme = input('Theme: ')
+    def choice_theme(self):
+        return input('Theme: ')
+
+    def choice_selection(self):
+        return input('Selection: ')
+
+    def choice_theme_select(self,table):
+        theme = self.choice_theme()
         if theme == 'all' or theme == '*':
             sql = f'SELECT "en_{table}","ru_{table}" FROM {table}'
         else:
             sql = f'SELECT "en_{table}","ru_{table}" FROM {table} WHERE theme="{theme}"'
         return sql
     #choice selectin from the database
-    def choice_selection(self,sql):
-        selection = input('Selection: ')
+    def choice_selection_select(self,sql):
+        selection = self.choice_selection()
         if selection == 'all' or selection == '*':
             return sql
         else:
             return sql + f' AND selection="{selection}"'
 
-    def choice(self,table):
-        sql = self.choice_selection(self.choice_theme(table))
+    def choice_select(self,table):
+        sql = self.choice_selection_select(self.choice_theme_select(table))
         return sql
 
 class PrintSmthMixin:
@@ -65,15 +71,11 @@ class PrintSmthMixin:
 class Words(DataBase,ChoiceTSMixin,PrintSmthMixin):
     theme_selection = None
     def theme_init(self):
-        self.theme_selection = self.choice(__class__.__name__.lower())
+        self.theme_selection = self.choice_select(__class__.__name__.lower())
 
     def input_word(self):
-        #input word to the database
-        # words =[]
-        # words += input().split()
-        # self.insert_db(words[0],words[1],words[2],words[3])
-        theme = input('Theme: ')
-        selection = input('Selection: ')
+        theme = self.choice_theme()
+        selection = self.choice_selection()
         while True:
             word_en = input()
             if word_en == 'e' or word_en == 'q':
@@ -158,8 +160,8 @@ class Texts(DataBase,ChoiceTSMixin,PrintSmthMixin):
         self.russian_smth_index,self.english_smth_index)
 
 word = Words()
-word.theme_init()
-# word.input_word()
-word.words_en_ru()
-word.words_ru_en()
+# word.theme_init()
+word.input_word()
+# word.words_en_ru()
+# word.words_ru_en()
 # word.test_one_three_ru()
