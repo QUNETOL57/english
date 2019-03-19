@@ -4,6 +4,7 @@ from utils import *
 
 class Words(DataBase,ChoiceTSMixin,PrintSmthMixin):
     theme_selection = None
+    class_name = 'words'
     def theme_init(self):
         self.theme_selection = self.choice_select(__class__.__name__.lower())
 
@@ -15,7 +16,7 @@ class Words(DataBase,ChoiceTSMixin,PrintSmthMixin):
             if word_en == 'e' or word_en == 'q':
                 break
             word_ru = input()
-            self.insert_db(word_en,word_ru,theme,selection)
+            self.insert_db(self.class_name,word_en,word_ru,theme,selection)
 
     def words_en_ru(self):
         # print english - russian words for a theme
