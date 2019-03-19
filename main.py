@@ -3,9 +3,10 @@ from texts import Texts
 from utils import *
 
 word = Words()
-word.input_word()
-word.theme_init()
-word.words_en_ru()
+# word.input_word()
+# word.theme_init()
+# word.words_en_ru()
+word.delete_db('words','new','1','hello1')
 # word.input_text()
 # word.theme_init()
 # word.text_en_ru()

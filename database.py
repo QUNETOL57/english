@@ -21,9 +21,11 @@ class DataBase():
         sql = f"INSERT INTO {table} VALUES ('{id}','{en}','{ru}','{theme}','{selection}')"
         self.changes_db(sql)
 
-    def delete_db(self):
-        sql = """DELETE FROM {} WHERE {} = {}""".format('words','en_word',"{}".format('bread'))
-        self.changes_db(sql)
+    def delete_db(self,table,theme,selection,smth):
+        warn = input('Are you sure? y/n')
+        if warn == 'y':
+            sql = f"DELETE FROM {table} WHERE theme = '{theme}' AND selection = '{selection}' and en_words = '{smth}'"
+            self.changes_db(sql)
 
     def update_db(self):
         sql = """UPDATE {} SET {} = {} WHERE {} = {}""".format('words', 'ru_word', "'есть'", 'ru_word', "'еда'")
