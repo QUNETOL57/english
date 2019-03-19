@@ -15,10 +15,10 @@ class DataBase():
         self.cursor.execute(sql)
         self.connect_db.commit()
 
-    def insert_db(self,en,ru,theme,selection):
-        self.cursor.execute(f'SELECT * FROM "words"')
+    def insert_db(self,table,en,ru,theme,selection):
+        self.cursor.execute(f'SELECT * FROM "{table}"')
         id = len(self.cursor.fetchall()) + 1
-        sql = f"INSERT INTO words VALUES ('{id}','{en}','{ru}','{theme}','{selection}')"
+        sql = f"INSERT INTO {table} VALUES ('{id}','{en}','{ru}','{theme}','{selection}')"
         self.changes_db(sql)
 
     def delete_db(self):
