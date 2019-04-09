@@ -22,7 +22,7 @@ class DataBase():
         self.changes_db(sql)
 
     def delete_db(self,table,theme,selection,smth):
-        warn = input('Are you sure? y/n')
+        warn = input('Are you sure? y/n \n')
         if warn == 'y':
             sql = f"DELETE FROM {table} WHERE theme = '{theme}' AND selection = '{selection}' and en_words = '{smth}'"
             self.changes_db(sql)
@@ -31,6 +31,6 @@ class DataBase():
         sql = """UPDATE {} SET {} = {} WHERE {} = {}""".format('words', 'ru_word', "'есть'", 'ru_word', "'еда'")
         self.changes_db(sql)
 
-    def select_db(self, sql = """SELECT * FROM {}""".format('words')):
+    def select_db(self, sql):
         self.changes_db(sql)
         return self.cursor.fetchall()

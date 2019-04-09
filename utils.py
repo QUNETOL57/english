@@ -30,3 +30,13 @@ class PrintSmthMixin:
         db = self.select_db(theme)
         for line in db:
             print(f"{line[index1]} - {line[index2]}")
+
+class IntutMuchWords:
+    def input_lines(self):
+        array = []
+        with open('1.txt','r',encoding='UTF-8') as file:
+            for line in file:
+                line = line.strip()
+                array += line.split(' - ')
+        for i in range(0,len(array),2):
+            print(f"{array[i]} - {array[i+1]}")
