@@ -12,6 +12,6 @@ from utils import *
 # # word.text_en_ru()
 # # word.words_ru_en()
 # # word.test_one_three_ru()
-
-if __name__ == "__main__":
-    print("Введите действие:")
+# 
+# if __name__ == "__main__":
+#     print("Введите действие:")
